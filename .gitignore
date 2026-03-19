@@ -1,0 +1,23 @@
+# Build directory
+build/
+
+# Generated data files (GNUPlot datasets)
+datasets/*.dat
+
+# Generated/exported files
+*.png
+*.dae
+*.pdf
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+tests/bin/

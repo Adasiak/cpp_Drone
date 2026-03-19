@@ -898,6 +898,38 @@ TEST_CASE("dron - poruszanie ")
 
 }
 
+TEST_CASE("dron - ruchMechanika zmienia pozycje")
+{
+    Vector<3> przesuniecie;
+    przesuniecie[0]=10;
+    przesuniecie[1]=20;
+    int kasia=1;
+    Dron Pr(kasia);
+
+    Vector<3> przed, po;
+    przed=Pr.wspolrzedne();
+
+    Pr.ruchMechanika(przesuniecie, 0, 0);
+    po=Pr.wspolrzedne();
+
+    CHECK(przesuniecie == po);
+}
+
+TEST_CASE("dron - obrotMechanika nie zmienia pozycji")
+{
+    Vector<3> zero;
+    int kasia=1;
+    Dron Pr(kasia);
+
+    Vector<3> przed, po;
+    przed=Pr.wspolrzedne();
+
+    Pr.obrotMechanika(90);
+    po=Pr.wspolrzedne();
+
+    CHECK(przed == po);
+}
+
 TEST_CASE("dron - obrot")
 {
     Vector<3> zero;
@@ -1061,7 +1093,15 @@ TEST_CASE("dron - animacja z kolizja")
     // double tab1[3]={10, 20, 0};
     Vector<3> jeden, dwa;
 
+    // Automatyczne wartości zamiast interaktywnego std::cin
+    std::istringstream fake_input("1\n10\n10\n");
+    std::streambuf* orig_cin = std::cin.rdbuf(fake_input.rdbuf());
+
     Pr.AnimacjaLotuDrona(p1,Laczee,5.0,5.0);
+
+    // Przywrócenie oryginalnego std::cin
+    std::cin.rdbuf(orig_cin);
+
     bool kolizja=false;
     auto a = p1.cbegin();
 

@@ -45,6 +45,11 @@ Dron(int id);
 void ruch(Vector<3> droga, double katOZ, double katOY /*, double OX*/);
 void obrot(double kat);
 
+// --- Warstwa mechaniki (bez I/O) ---
+void ruchMechanika(Vector<3> droga, double katOZ, double katOY);
+void obrotMechanika(double kat);
+void zapiszWszystko();
+
 // void DodajTrasePrzelotu(double x1, double y1, string nazwa_pliku, string nazwa_pliku_do_zapisu);
 
 void AnimacjaLotuDrona(list<std::shared_ptr<Przeszkody>> &p,PzG::LaczeDoGNUPlota &Lacze, double x1, double y1);
