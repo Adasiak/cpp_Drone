@@ -90,7 +90,7 @@ Vector<3> Dron::wspolrzedne()
 
 */
 
-void Dron::ruch(Vector<3> droga, double katOZ, double katOY)
+void Dron::ruchMechanika(Vector<3> droga, double katOZ, double katOY)
 {
   if (iddrona == 1)
   {
@@ -107,30 +107,16 @@ void Dron::ruch(Vector<3> droga, double katOZ, double katOY)
     wirniki[2]->move(droga);
 
     wirniki[3]->set_katOZ(katOZ);
-    ;
     wirniki[3]->obrotW(90);
     wirniki[3]->move(droga);
 
     korpus->set_katOZ(katOZ);
     korpus->set_katOY(katOY);
-    // korpus->obrotP(1);
     czubek[0]->move(droga);
 
     korpus->move(droga);
 
-    wirniki[0]->zapis();
-    wirniki[1]->zapis();
-    wirniki[2]->zapis();
-    wirniki[3]->zapis();
-
-     czubek[0]->zapis();
-
-    korpus->zapis();
-
     Dron::droga = droga + Dron::droga;
-
-    // srodekD=srodekD+droga;
-
   }
 
   if (iddrona == 2)
@@ -148,28 +134,55 @@ void Dron::ruch(Vector<3> droga, double katOZ, double katOY)
     wirniki1[2]->move(droga);
 
     wirniki1[3]->set_katOZ(katOZ);
-    ;
     wirniki1[3]->obrotW(90);
     wirniki1[3]->move(droga);
 
     korpus1->set_katOZ(katOZ);
     korpus1->set_katOY(katOY);
-    // korpus->obrotP(1);
     czubek[1]->move(droga);
     
     korpus1->move(droga);
 
+    Dron::dwojka = droga + Dron::dwojka;
+  }
+}
+
+/*!       
+    \brief
+    zapiszWszystko
+    Skonsolidowany zapis wszystkich składowych drona (korpus, wirniki, czubek) do plików .dat
+*/
+void Dron::zapiszWszystko()
+{
+  if (iddrona == 1)
+  {
+    wirniki[0]->zapis();
+    wirniki[1]->zapis();
+    wirniki[2]->zapis();
+    wirniki[3]->zapis();
+    czubek[0]->zapis();
+    korpus->zapis();
+  }
+
+  if (iddrona == 2)
+  {
     wirniki1[0]->zapis();
     wirniki1[1]->zapis();
     wirniki1[2]->zapis();
     wirniki1[3]->zapis();
-
     czubek[1]->zapis();
-
     korpus1->zapis();
-
-    Dron::dwojka = droga + Dron::dwojka;
   }
+}
+
+/*!       
+    \brief
+    Ruch — wrapper na ruchMechanika + zapiszWszystko
+*/
+void Dron::ruch(Vector<3> droga, double katOZ, double katOY)
+{
+  ruchMechanika(droga, katOZ, katOY);
+  zapiszWszystko();
 }
 
 /*!       
@@ -179,7 +192,7 @@ void Dron::ruch(Vector<3> droga, double katOZ, double katOY)
 
     przy jednoczesnym obrocie rotorow wolol wlasnej osi
 */
-void Dron::obrot(double kat)
+void Dron::obrotMechanika(double kat)
 {
   Vector<3> tmp;
   if(iddrona==1)
@@ -198,17 +211,8 @@ void Dron::obrot(double kat)
         wirniki[3]->obrotW1(kat,droga);
 
         czubek[0]->obrotW1(kat,droga);
-        czubek[0]->zapis();
 
         korpus->obrotP(kat, droga);
-
-        wirniki[0]->zapis();
-        wirniki[1]->zapis();
-        wirniki[2]->zapis();
-        wirniki[3]->zapis();
-
-
-        korpus->zapis();
     }
     if(kat<0)
     {
@@ -225,18 +229,8 @@ void Dron::obrot(double kat)
         wirniki[3]->obrotW1(kat,droga);
 
         czubek[0]->obrotW1(kat,droga);
-        czubek[0]->zapis();
-
 
         korpus->obrotP(kat, droga);
-
-        wirniki[0]->zapis();
-        wirniki[1]->zapis();
-        wirniki[2]->zapis();
-        wirniki[3]->zapis();
-
-        korpus->zapis();
-
     }
   }
   if(iddrona==2)
@@ -254,17 +248,9 @@ void Dron::obrot(double kat)
         wirniki1[3]->obrotW(90);
         wirniki1[3]->obrotW1(kat,dwojka);
 
-         czubek[1]->obrotW1(kat,dwojka);
-        czubek[1]->zapis();
+        czubek[1]->obrotW1(kat,dwojka);
 
         korpus1->obrotP(kat, dwojka);
-
-        wirniki1[0]->zapis();
-        wirniki1[1]->zapis();
-        wirniki1[2]->zapis();
-        wirniki1[3]->zapis();
-
-        korpus1->zapis();
     }
     if(kat<0){
         wirniki1[0]->obrotW(90);
@@ -280,25 +266,27 @@ void Dron::obrot(double kat)
         wirniki1[3]->obrotW1(kat,dwojka);
 
         czubek[1]->obrotW1(kat,dwojka);
-        czubek[1]->zapis();
 
         korpus1->obrotP(kat, dwojka);
-
-        wirniki1[0]->zapis();
-        wirniki1[1]->zapis();
-        wirniki1[2]->zapis();
-        wirniki1[3]->zapis();
-
-        korpus1->zapis();
     }
   }
+}
+
+/*!       
+    \brief
+    Obrot — wrapper na obrotMechanika + zapiszWszystko
+*/
+void Dron::obrot(double kat)
+{
+  obrotMechanika(kat);
+  zapiszWszystko();
 }
 
 
 std::ostream &operator<<(std::ostream &Strm,
                          /*const*/ Dron &P)
 {
-  Strm << P << endl;
+  Strm << "Dron srodek: " << P.get_srodek() << endl;
   return Strm;
 }
 
