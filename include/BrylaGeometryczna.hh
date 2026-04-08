@@ -60,7 +60,9 @@ public:
 
     // bool czy_kolizja(std::shared_ptr <Przeszkody> p) const;
      double wez_promien(){return bpromien;}
-     
+
+
+
     void set_srodek(Vector<3> srodek);
         // string nazwa(){ return nazwa_pliku_do_zapisu;}
 

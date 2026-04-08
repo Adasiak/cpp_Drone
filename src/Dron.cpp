@@ -408,7 +408,8 @@ void Dron::AnimacjaLotuDrona(list<std::shared_ptr<Przeszkody>> &p, PzG::LaczeDoG
            << "Wznoszenie ... " << endl;
       for (; z_dron <= 120; z_dron += 2)
       {
-        ruch(wznoszenie, 0, 0);
+        ruchMechanika(wznoszenie, 0, 0);
+        zapiszWszystko();
         // if (!PrzemiescDrona(KatOr_st,x_dron,y_dron,z_dron))
         //     return false;
         usleep(100000); // 0.1 ms
@@ -429,7 +430,8 @@ void Dron::AnimacjaLotuDrona(list<std::shared_ptr<Przeszkody>> &p, PzG::LaczeDoG
         for (int i = 0; i <= d; i += 5)
         {
 
-          obrot(5);
+          obrotMechanika(5);
+          zapiszWszystko();
 
           usleep(100000);
           Lacze.Rysuj();
@@ -441,7 +443,8 @@ void Dron::AnimacjaLotuDrona(list<std::shared_ptr<Przeszkody>> &p, PzG::LaczeDoG
         for (int i = 0; i <= d; i += 5)
         {
 
-          obrot(-5);
+          obrotMechanika(-5);
+          zapiszWszystko();
 
           usleep(100000);
           Lacze.Rysuj();
@@ -476,7 +479,8 @@ for(int i=0;i<k;i++){
       for (; (y_dron <= 50); x_dron += 1, y_dron += 1)
       {
 
-        ruch(lot, 0, 0);
+        ruchMechanika(lot, 0, 0);
+        zapiszWszystko();
 
         usleep(100000);
         Lacze.Rysuj();
@@ -520,7 +524,8 @@ for(int i=0;i<k;i++){
                         << "Wznoszenie ... " << endl;
                     for (; z_dron <= 120; z_dron += 2)
                     {
-                      ruch(wznoszenie, 0, 0);
+                      ruchMechanika(wznoszenie, 0, 0);
+                      zapiszWszystko();
                       // if (!PrzemiescDrona(KatOr_st,x_dron,y_dron,z_dron))
                       //     return false;
                       usleep(100000); // 0.1 ms
@@ -541,7 +546,8 @@ for(int i=0;i<k;i++){
                         for (int i = 0; i <= d; i += 5)
                         {
 
-                          obrot(5);
+                          obrotMechanika(5);
+                          zapiszWszystko();
 
                           usleep(100000);
                           Lacze.Rysuj();
@@ -553,7 +559,8 @@ for(int i=0;i<k;i++){
                         for (int i = 0; i <= d; i += 5)
                         {
 
-                          obrot(-5);
+                          obrotMechanika(-5);
+                          zapiszWszystko();
 
                           usleep(100000);
                           Lacze.Rysuj();
@@ -581,7 +588,8 @@ for(int i=0;i<k;i++){
                   for (; (y_dron <= 50); x_dron += 1, y_dron += 1)
                   {
 
-                    ruch(lot, 0, 0);
+                    ruchMechanika(lot, 0, 0);
+                    zapiszWszystko();
 
                     usleep(100000);
                     Lacze.Rysuj();
@@ -614,7 +622,8 @@ for(int i=0;i<k;i++){
                           << "Autpilot pracuje ...." << endl;
                       for (; z_dron <= 120; z_dron += 2)
                       {
-                        ruch(wznoszenie, 0, 0);
+                        ruchMechanika(wznoszenie, 0, 0);
+                        zapiszWszystko();
                         // if (!PrzemiescDrona(KatOr_st,x_dron,y_dron,z_dron))
                         //     return false;
                         usleep(100000); // 0.1 ms
@@ -645,7 +654,8 @@ for(int i=0;i<k;i++){
                       for (; (y_dron <= 50); x_dron += 1, y_dron += 1)
                       {
 
-                        ruch(lot, 0, 0);
+                        ruchMechanika(lot, 0, 0);
+                        zapiszWszystko();
 
                         usleep(100000);
                         Lacze.Rysuj();
@@ -685,7 +695,8 @@ for(int i=0;i<k;i++){
                             break;
                           }
                           if(kolizja==false){
-                          ruch(opadanie, 0, 0);
+                          ruchMechanika(opadanie, 0, 0);
+                          zapiszWszystko();
                           }
                           kolizja = false;
 
@@ -742,7 +753,8 @@ for(int i=0;i<k;i++){
         break;
       }
       if(kolizja==false){
-      ruch(opadanie, 0, 0);
+      ruchMechanika(opadanie, 0, 0);
+      zapiszWszystko();
       }
       kolizja = false;
 
@@ -793,7 +805,8 @@ void Dron::zwiad2(PzG::LaczeDoGNUPlota &Lacze, double promien)
        << "Wznoszenie ... " << endl;
   for (; z_dron <= 120; z_dron += 2)
   {
-    ruch(wznoszenie, 0, 0);
+    ruchMechanika(wznoszenie, 0, 0);
+    zapiszWszystko();
 
     usleep(100000); // 0.1 ms
     Lacze.Rysuj();
@@ -807,7 +820,8 @@ void Dron::zwiad2(PzG::LaczeDoGNUPlota &Lacze, double promien)
   for (; KatOr_st <= 45; KatOr_st += 5)
   {
 
-    obrot(5);
+    obrotMechanika(5);
+    zapiszWszystko();
 
     usleep(100000);
     Lacze.Rysuj();
@@ -838,7 +852,8 @@ void Dron::zwiad2(PzG::LaczeDoGNUPlota &Lacze, double promien)
   for (; /*(x_dron <= 100)&&*/ (y_dron <= 50); x_dron += 1, y_dron += 1)
   {
 
-    ruch(lot, 0, 0);
+    ruchMechanika(lot, 0, 0);
+    zapiszWszystko();
 
     usleep(100000);
     Lacze.Rysuj();
@@ -853,7 +868,8 @@ void Dron::zwiad2(PzG::LaczeDoGNUPlota &Lacze, double promien)
   for (int j = 0; j <= 90; j += 5)
   {
 
-    obrot(5);
+    obrotMechanika(5);
+    zapiszWszystko();
 
     usleep(100000);
     Lacze.Rysuj();
@@ -889,7 +905,8 @@ void Dron::zwiad2(PzG::LaczeDoGNUPlota &Lacze, double promien)
 
   for (int i = 0; i <= 180; i++)
   {
-    obrot(2);
+    obrotMechanika(2);
+    zapiszWszystko();
 
     usleep(100000);
     Lacze.Rysuj();
@@ -911,7 +928,8 @@ void Dron::zwiad2(PzG::LaczeDoGNUPlota &Lacze, double promien)
   for (int k = 0; k <= 90; k += 5)
   {
 
-    obrot(5);
+    obrotMechanika(5);
+    zapiszWszystko();
 
     usleep(100000);
     Lacze.Rysuj();
@@ -926,7 +944,8 @@ void Dron::zwiad2(PzG::LaczeDoGNUPlota &Lacze, double promien)
   for (int l = 0; l <= 50; l++)
   {
 
-    ruch(powrot, 0, 0);
+    ruchMechanika(powrot, 0, 0);
+    zapiszWszystko();
 
     usleep(100000);
     Lacze.Rysuj();
@@ -942,7 +961,8 @@ void Dron::zwiad2(PzG::LaczeDoGNUPlota &Lacze, double promien)
   for (; z_dron >= 0; z_dron -= 2)
   {
 
-    ruch(opadanie, 0, 0);
+    ruchMechanika(opadanie, 0, 0);
+    zapiszWszystko();
 
     usleep(100000); // 0.1 ms
     Lacze.Rysuj();

@@ -47,6 +47,8 @@ class Scena
     Vector<3> operator [](int i)const {return scr1[i];}
 
 
+
+
     void add_basic_objects(list<std::shared_ptr<Przeszkody> > &p,PzG::LaczeDoGNUPlota &Lacze,Vector<3> place, double xwth, double ywth,int k,int rodzaj);
 
    
