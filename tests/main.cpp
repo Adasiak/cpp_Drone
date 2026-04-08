@@ -958,8 +958,8 @@ TEST_CASE("dron - obrot")
 TEST_CASE("dron - animacaj")
 {
     Vector<3> zero;
-    zero[0]=18.6;
-    zero[1]=21.7;
+    zero[0]=15;
+    zero[1]=20;
     list<std::shared_ptr<Przeszkody>> p1;
     PzG::LaczeDoGNUPlota Laczee;
     // double h = 0, w = 0 , p=0;
@@ -982,8 +982,8 @@ TEST_CASE("dron - animacaj")
 TEST_CASE("dron - zwiad2")
 {
     Vector<3> zero;
-    zero[0]=-0.5;
-    zero[1]=-0.5;
+    zero[0]=10;
+    zero[1]=10;
     list<std::shared_ptr<Przeszkody>> p1;
     PzG::LaczeDoGNUPlota Laczee;
     // double h = 0, w = 0 , p=0;

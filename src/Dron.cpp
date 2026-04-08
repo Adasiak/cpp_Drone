@@ -466,17 +466,17 @@ for(int i=0;i<k;i++){
       double q, w;
       if (iddrona == 1)
       {
-        q = (droga[0] - 15.0);
-        w = (droga[1] - 15.0);
+        q = droga[0];
+        w = droga[1];
       }
       if (iddrona == 2)
       {
-        q = (dwojka[0] - 15.0);
-        w = (dwojka[1] - 15.0);
+        q = dwojka[0];
+        w = dwojka[1];
       }
 
-      x = (x1 - q) / 50;
-      y = (y1 - w) / 50;
+      x = (x1 - q) / 31;
+      y = (y1 - w) / 31;
       Vector<3> lot;
       lot[0] = x;
       lot[1] = y;
@@ -574,17 +574,17 @@ for(int i=0;i<k;i++){
 
                     if (iddrona == 1)
                     {
-                        q = (droga[0] - 15.0);
-                        w = (droga[1] - 15.0);
+                        q = droga[0];
+                        w = droga[1];
                     }
                     if (iddrona == 2)
                     {
-                        q = (dwojka[0] - 15.0);
-                        w = (dwojka[1] - 15.0);
+                        q = dwojka[0];
+                        w = dwojka[1];
                     }
 
-                  x = (xx - q) / 50;
-                  y = (yy - w) / 50;
+                  x = (xx - q) / 31;
+                  y = (yy - w) / 31;
                   Vector<3> lot;
                   lot[0] = x;
                   lot[1] = y;
@@ -650,8 +650,8 @@ for(int i=0;i<k;i++){
                         w = rand() % -20 + 20;
                       }
 
-                      x =  q / 50;
-                      y = w / 50;
+                      x =  q / 31;
+                      y = w / 31;
                       Vector<3> lot;
                       lot[0] = x;
                       lot[1] = y;
@@ -840,16 +840,16 @@ void Dron::zwiad2(PzG::LaczeDoGNUPlota &Lacze, double promien)
   double a, b;
   if (iddrona == 1)
   {
-    a = (droga[0] - 15.0);
-    b = (droga[1] - 15.0);
+    a = droga[0];
+    b = droga[1];
   }
   if (iddrona == 2)
   {
-    a = (droga[0] - 15.0);
-    b = (droga[1] - 15.0);
+    a = dwojka[0];
+    b = dwojka[1];
   }
-  x = (promien - a) / 50;
-  y = (promien - b) / 50;
+  x = (promien - a) / 31;
+  y = (promien - b) / 31;
   Vector<3> lot;
   lot[0] = x;
   lot[1] = y;
@@ -944,8 +944,8 @@ void Dron::zwiad2(PzG::LaczeDoGNUPlota &Lacze, double promien)
 
   cout << "Powrót...." << endl;
   Vector<3> powrot;
-  powrot[0] = -(promien - 10) / 50;
-  powrot[1] = -(promien - 10) / 50;
+  powrot[0] = -(promien - 10) / 51;
+  powrot[1] = -(promien - 10) / 51;
   for (int l = 0; l <= 50; l++)
   {
 
