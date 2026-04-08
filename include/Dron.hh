@@ -65,7 +65,8 @@ Vector<3> wspolrzedne();
 bool czy_kolizja(shared_ptr <Przeszkody> p);
 
     Vector<3> get_srodek() ;
-    
+
+
 
 };
 
