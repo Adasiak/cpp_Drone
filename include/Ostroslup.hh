@@ -10,12 +10,14 @@ class Ostroslup : public BrylaGeometryczna
     protected:
     int nrprzeszkody;
     double opromien;
+    double baza_promien;  // promień bazy w XY
     // Vector<3> srodek;
     public:
     Ostroslup(Vector<3> pkt,double dlugosc ,double szerokosc, double wysokosc, string nazwa_pliku, string nazwa_pliku_do_zapisu);
     // ~Ostroslup();
         Vector<3> wez_srodek() ;
         double wez_promien(){return opromien;}
+        double promien(){return baza_promien;}
     
 };
 

@@ -12,6 +12,7 @@ class PPlaskowyz : public BrylaGeometryczna
 {
   
 double ppromien;
+double baza_promien;  // promień bazy w XY
 public:
     PPlaskowyz(){};
 
@@ -19,6 +20,7 @@ public:
     
       Vector<3> wez_srodek();
       double wez_promien(){return ppromien;}
+      double promien(){return baza_promien;}
 };
 
 

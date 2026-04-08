@@ -347,9 +347,10 @@ std::ostream &operator<<(std::ostream &Strm,
 /*!       
     \brief
     czy_kolizja 
-    Funkcja sprawdza odleglosc miedzy punktem bazowym drona a srodkiem przeszkody 
-    jesli dana odlegosc jest mniejsza od pomieni drona oraz przeszkody nastepuje kolizja i zwracana jest wartosc true 
-    w przeciwnym razie zwracana jest wartosc false
+    Funkcja sprawdza kolizję drona z przeszkodą.
+    Używa modelu cylindrycznego:
+    1. Sprawdzenie wysokości — dron powyżej przeszkody nie koliduje
+    2. Sprawdzenie odległości w płaszczyźnie XY
 */
 bool Dron::czy_kolizja(std::shared_ptr<Przeszkody> p)
 {
@@ -360,18 +361,22 @@ bool Dron::czy_kolizja(std::shared_ptr<Przeszkody> p)
   Vector<3> srodek_Obiektu ;
   srodek_Obiektu = p->wez_srodek();
 
+  // 1. Sprawdzenie wysokości — dron powyżej przeszkody nie koliduje
+  if (srodek_Drona[2] > p->wez_promien())
+    return false;
 
-  double l = sqrt(pow(srodek_Drona[0] - srodek_Obiektu[0], 2) + pow(srodek_Drona[1] - srodek_Obiektu[1], 2) + pow(srodek_Drona[2] - srodek_Obiektu[2], 2));
+  // 2. Sprawdzenie odległości w płaszczyźnie poziomej (XY)
+  double dx = srodek_Drona[0] - srodek_Obiektu[0];
+  double dy = srodek_Drona[1] - srodek_Obiektu[1];
+  double dist_xy = sqrt(dx*dx + dy*dy);
 
-  // std::cout << "l" << srodek_Drona << std::endl;
-  // std::cout << "pppppp" << p->wez_promien() << std::endl;
-
-  if (promien + p->wez_promien() >= l)
+  if ((promien + p->promien()) >= dist_xy)
   {
     return true;
   }
   return false;
 }
+
 
 /*!       
     \brief
@@ -977,16 +982,14 @@ void Dron::zwiad2(PzG::LaczeDoGNUPlota &Lacze, double promien)
     \brief
     get_srodek
     funkcja ustala srodek korpusu drona
+    Zwraca aktualną pozycję drona (Dron::droga / Dron::dwojka),
+    spójną z obliczeniami w AnimacjaLotuDrona i zwiad2.
 */
 
 Vector<3> Dron::get_srodek()
 {
-  Vector<3> pom;
   if(iddrona==1){
-    pom=korpus->wez_srodek()+Dron::droga;
+    return Dron::droga;
   }
-  if(iddrona==2){
-    pom=korpus1->wez_srodek()+Dron::dwojka;
-  }
-  return pom;
+  return Dron::dwojka;
 }
