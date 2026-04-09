@@ -169,3 +169,39 @@ void BrylaGeometryczna::zapis(){
     }
     plik.close();
 }
+
+
+/*!       
+    \brief
+    przechyl
+    Obraca wszystkie wierzcholki bryly o kat stopni wokol osi X 
+    przechodzacej przez podany punkt centralny.
+    Sluzy do wizualnego przechylenia drona w przod/tyl podczas lotu.
+*/
+void BrylaGeometryczna::przechyl(double kat, Vector<3> center, double heading){
+    double rad = kat * M_PI / 180.0;
+    double cosA = cos(rad), sinA = sin(rad);
+    double kx = -sin(heading), ky = cos(heading); // os przechylu
+    for(int i=0; i<(int)pkt1.size(); i++){
+        Vector<3> rel;
+        rel[0] = pkt1[i][0] - center[0];
+        rel[1] = pkt1[i][1] - center[1];
+        rel[2] = pkt1[i][2] - center[2];
+
+        // Rodrigues: p' = p*cos + (k x p)*sin + k*(k.p)*(1-cos)
+        double dot = kx*rel[0] + ky*rel[1];
+        Vector<3> cross;
+        cross[0] = ky*rel[2];
+        cross[1] = -kx*rel[2];
+        cross[2] = kx*rel[1] - ky*rel[0];
+
+        Vector<3> rotated;
+        rotated[0] = rel[0]*cosA + cross[0]*sinA + kx*dot*(1-cosA);
+        rotated[1] = rel[1]*cosA + cross[1]*sinA + ky*dot*(1-cosA);
+        rotated[2] = rel[2]*cosA + cross[2]*sinA;
+
+        pkt1[i][0] = rotated[0] + center[0];
+        pkt1[i][1] = rotated[1] + center[1];
+        pkt1[i][2] = rotated[2] + center[2];
+    }
+}

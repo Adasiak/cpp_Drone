@@ -59,6 +59,7 @@ void zwiad(Vector<3> promien);//1 wersja
 void zwiad2(PzG::LaczeDoGNUPlota &Lacze,double promien);//2 wersja 
 
 void zapisz();
+void przechylDrona(double kat, double heading);
 
 Vector<3> wspolrzedne();
 
