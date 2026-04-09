@@ -56,7 +56,8 @@ PPlaskowyz::PPlaskowyz(Vector<3> pkt, double h, double w, double d, string nazwa
         this->srodek=pom;
         set_srodek(pom);
 
-        ppromien=sqrt(pow(pkt1[4][0]-pom[0],2) + pow(pkt1[4][1]-pom[1],2)+pow(pkt1[4][2]-pom[2],2));
+        ppromien=d;  // wysokość przeszkody (do sprawdzenia Z)
+        baza_promien=sqrt(pow(h/2, 2) + pow(w/2, 2));  // promień bazy w XY od środka
 //     pkt1[1][0] -= h/2;
 //     pkt1[1][1] -= w/2;
 

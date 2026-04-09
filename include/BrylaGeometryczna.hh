@@ -42,6 +42,8 @@ public:
 
     void zapis();
 
+    void przechyl(double kat, Vector<3> center, double heading);
+
     void set_katOX(double kat){katOX+=kat;}
     void set_katOZ(double kat){katOZ+=kat;}
     void set_katOY(double kat){katOY=kat;}

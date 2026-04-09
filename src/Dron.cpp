@@ -346,10 +346,37 @@ std::ostream &operator<<(std::ostream &Strm,
 
 /*!       
     \brief
+    przechylDrona
+    Przechyla cały dron (korpus, wirniki, czubek) o zadany kąt 
+    wokół osi X przechodzącej przez środek drona.
+    Kąt dodatni = przechył do przodu, ujemny = do tyłu.
+*/
+void Dron::przechylDrona(double kat, double heading)
+{
+  Vector<3> center = get_srodek();
+  if (iddrona == 1)
+  {
+    korpus->przechyl(kat, center, heading);
+    for (int i = 0; i < 4; i++)
+      wirniki[i]->przechyl(kat, center, heading);
+    czubek[0]->przechyl(kat, center, heading);
+  }
+  if (iddrona == 2)
+  {
+    korpus1->przechyl(kat, center, heading);
+    for (int i = 0; i < 4; i++)
+      wirniki1[i]->przechyl(kat, center, heading);
+    czubek[1]->przechyl(kat, center, heading);
+  }
+}
+
+/*!       
+    \brief
     czy_kolizja 
-    Funkcja sprawdza odleglosc miedzy punktem bazowym drona a srodkiem przeszkody 
-    jesli dana odlegosc jest mniejsza od pomieni drona oraz przeszkody nastepuje kolizja i zwracana jest wartosc true 
-    w przeciwnym razie zwracana jest wartosc false
+    Funkcja sprawdza kolizję drona z przeszkodą.
+    Używa modelu cylindrycznego:
+    1. Sprawdzenie wysokości — dron powyżej przeszkody nie koliduje
+    2. Sprawdzenie odległości w płaszczyźnie XY
 */
 bool Dron::czy_kolizja(std::shared_ptr<Przeszkody> p)
 {
@@ -360,18 +387,22 @@ bool Dron::czy_kolizja(std::shared_ptr<Przeszkody> p)
   Vector<3> srodek_Obiektu ;
   srodek_Obiektu = p->wez_srodek();
 
+  // 1. Sprawdzenie wysokości — dron powyżej przeszkody nie koliduje
+  if (srodek_Drona[2] > p->wez_promien())
+    return false;
 
-  double l = sqrt(pow(srodek_Drona[0] - srodek_Obiektu[0], 2) + pow(srodek_Drona[1] - srodek_Obiektu[1], 2) + pow(srodek_Drona[2] - srodek_Obiektu[2], 2));
+  // 2. Sprawdzenie odległości w płaszczyźnie poziomej (XY)
+  double dx = srodek_Drona[0] - srodek_Obiektu[0];
+  double dy = srodek_Drona[1] - srodek_Obiektu[1];
+  double dist_xy = sqrt(dx*dx + dy*dy);
 
-  // std::cout << "l" << srodek_Drona << std::endl;
-  // std::cout << "pppppp" << p->wez_promien() << std::endl;
-
-  if (promien + p->wez_promien() >= l)
+  if ((promien + p->promien()) >= dist_xy)
   {
     return true;
   }
   return false;
 }
+
 
 /*!       
     \brief
@@ -461,21 +492,23 @@ for(int i=0;i<k;i++){
       double q, w;
       if (iddrona == 1)
       {
-        q = (droga[0] - 15.0);
-        w = (droga[1] - 15.0);
+        q = droga[0];
+        w = droga[1];
       }
       if (iddrona == 2)
       {
-        q = (dwojka[0] - 15.0);
-        w = (dwojka[1] - 15.0);
+        q = dwojka[0];
+        w = dwojka[1];
       }
 
-      x = (x1 - q) / 50;
-      y = (y1 - w) / 50;
+      x = (x1 - q) / 31;
+      y = (y1 - w) / 31;
       Vector<3> lot;
       lot[0] = x;
       lot[1] = y;
       cout << "Lot do przodu ... " << endl;
+      przechylDrona(25, c);
+      zapiszWszystko();
       for (; (y_dron <= 50); x_dron += 1, y_dron += 1)
       {
 
@@ -485,6 +518,8 @@ for(int i=0;i<k;i++){
         usleep(100000);
         Lacze.Rysuj();
       }
+      przechylDrona(-25, c);
+      zapiszWszystko();
       x_dron -= 1, y_dron -= 1;
     }
     else{
@@ -534,16 +569,25 @@ for(int i=0;i<k;i++){
 
                     z_dron -= 2;
 
-                                double cc, dd;
-                    cc = atan2(yy, xx);
-                    // std::cout << c  <<std::endl;
-                    dd = cc * 180 / M_PI;
-                    // std::cout << d  <<std::endl;
+                    if (iddrona == 1)
+                    {
+                        q = droga[0];
+                        w = droga[1];
+                    }
+                    if (iddrona == 2)
+                    {
+                        q = dwojka[0];
+                        w = dwojka[1];
+                    }
+
+                    double cc = atan2(yy - w, xx - q);
+                    double dd = cc * 180 / M_PI;
+                    double delta = dd - d;
 
                     cout << "Zmiana orientacji ... " << endl;
-                    if (dd > 0)
+                    if (delta > 0)
                     {
-                        for (int i = 0; i <= d; i += 5)
+                        for (int i = 0; i <= delta; i += 5)
                         {
 
                           obrotMechanika(5);
@@ -555,8 +599,7 @@ for(int i=0;i<k;i++){
                     }
                     else
                     {
-                        dd = dd * (-1);
-                        for (int i = 0; i <= d; i += 5)
+                        for (int i = 0; i >= delta; i -= 5)
                         {
 
                           obrotMechanika(-5);
@@ -567,24 +610,15 @@ for(int i=0;i<k;i++){
                         }
                     }
 
-                    if (iddrona == 1)
-                    {
-                        q = (droga[0] - 15.0);
-                        w = (droga[1] - 15.0);
-                    }
-                    if (iddrona == 2)
-                    {
-                        q = (dwojka[0] - 15.0);
-                        w = (dwojka[1] - 15.0);
-                    }
-
-                  x = (xx - q) / 50;
-                  y = (yy - w) / 50;
+                  x = (xx - q) / 31;
+                  y = (yy - w) / 31;
                   Vector<3> lot;
                   lot[0] = x;
                   lot[1] = y;
                   cout << "Lot do przodu ... " << endl;
-                  
+                  przechylDrona(25, cc);
+                  zapiszWszystko();
+
                   for (; (y_dron <= 50); x_dron += 1, y_dron += 1)
                   {
 
@@ -594,6 +628,8 @@ for(int i=0;i<k;i++){
                     usleep(100000);
                     Lacze.Rysuj();
                   }
+                  przechylDrona(-25, cc);
+                  zapiszWszystko();
                   x_dron -= 1, y_dron -= 1;
             }
             if(qq==2)
@@ -645,12 +681,14 @@ for(int i=0;i<k;i++){
                         w = rand() % -20 + 20;
                       }
 
-                      x =  q / 50;
-                      y = w / 50;
+                      x =  q / 31;
+                      y = w / 31;
                       Vector<3> lot;
                       lot[0] = x;
                       lot[1] = y;
                       // cout << "Lot do przodu ... " << endl;
+                      przechylDrona(25, atan2(w, q));
+                      zapiszWszystko();
                       for (; (y_dron <= 50); x_dron += 1, y_dron += 1)
                       {
 
@@ -660,6 +698,8 @@ for(int i=0;i<k;i++){
                         usleep(100000);
                         Lacze.Rysuj();
                       }
+                      przechylDrona(-25, atan2(w, q));
+                      zapiszWszystko();
                       x_dron -= 1, y_dron -= 1;
 
                                     //-------------------------------------
@@ -835,20 +875,22 @@ void Dron::zwiad2(PzG::LaczeDoGNUPlota &Lacze, double promien)
   double a, b;
   if (iddrona == 1)
   {
-    a = (droga[0] - 15.0);
-    b = (droga[1] - 15.0);
+    a = droga[0];
+    b = droga[1];
   }
   if (iddrona == 2)
   {
-    a = (droga[0] - 15.0);
-    b = (droga[1] - 15.0);
+    a = dwojka[0];
+    b = dwojka[1];
   }
-  x = (promien - a) / 50;
-  y = (promien - b) / 50;
+  x = (promien - a) / 31;
+  y = (promien - b) / 31;
   Vector<3> lot;
   lot[0] = x;
   lot[1] = y;
   cout << "Lot do przodu ... " << endl;
+  przechylDrona(25, 50.0 * M_PI / 180.0);
+  zapiszWszystko();
   for (; /*(x_dron <= 100)&&*/ (y_dron <= 50); x_dron += 1, y_dron += 1)
   {
 
@@ -858,6 +900,8 @@ void Dron::zwiad2(PzG::LaczeDoGNUPlota &Lacze, double promien)
     usleep(100000);
     Lacze.Rysuj();
   }
+  przechylDrona(-25, 50.0 * M_PI / 180.0);
+  zapiszWszystko();
   x_dron -= 1, y_dron -= 1;
 
   // Dron::droga[0]=promien;
@@ -939,8 +983,8 @@ void Dron::zwiad2(PzG::LaczeDoGNUPlota &Lacze, double promien)
 
   cout << "Powrót...." << endl;
   Vector<3> powrot;
-  powrot[0] = -(promien - 10) / 50;
-  powrot[1] = -(promien - 10) / 50;
+  powrot[0] = -(promien - 10) / 51;
+  powrot[1] = -(promien - 10) / 51;
   for (int l = 0; l <= 50; l++)
   {
 
@@ -977,16 +1021,14 @@ void Dron::zwiad2(PzG::LaczeDoGNUPlota &Lacze, double promien)
     \brief
     get_srodek
     funkcja ustala srodek korpusu drona
+    Zwraca aktualną pozycję drona (Dron::droga / Dron::dwojka),
+    spójną z obliczeniami w AnimacjaLotuDrona i zwiad2.
 */
 
 Vector<3> Dron::get_srodek()
 {
-  Vector<3> pom;
   if(iddrona==1){
-    pom=korpus->wez_srodek()+Dron::droga;
+    return Dron::droga;
   }
-  if(iddrona==2){
-    pom=korpus1->wez_srodek()+Dron::dwojka;
-  }
-  return pom;
+  return Dron::dwojka;
 }
